@@ -38,9 +38,9 @@ import java.io.OutputStream;
 import java.net.URL;
 
 /**
- * @author vondear
- * @date 2016/1/24
- * 图像工具类
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 图像类工具
  */
 
 public class ImageToolUtils {

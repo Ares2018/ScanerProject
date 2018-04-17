@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 import com.google.zxing.LuminanceSource;
 
 /**
- * @author Vondear
- * @date 16/7/27
+ * @author
+ * @date 2018/4/17
  * 自定义解析Bitmap LuminanceSource
  */
 public class BitmapLuminanceSource extends LuminanceSource {

@@ -25,8 +25,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Finishes an activity after a period of inactivity.
- * @author vondear
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 扫描计时
  */
 public final class InactivityTimer {
 

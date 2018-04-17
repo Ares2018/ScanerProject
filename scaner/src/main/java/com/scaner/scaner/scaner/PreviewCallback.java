@@ -7,7 +7,9 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * @author vondear
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 相机预览回调
  */
 public final class PreviewCallback implements Camera.PreviewCallback {
 

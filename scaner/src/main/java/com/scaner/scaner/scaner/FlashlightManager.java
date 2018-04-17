@@ -7,7 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author Vondear
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 闪光灯管理类
  */
 final class FlashlightManager {
 

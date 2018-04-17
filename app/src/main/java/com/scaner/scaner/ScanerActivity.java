@@ -223,6 +223,7 @@ public class ScanerActivity extends Activity {
         } else if (viewId == R.id.top_back) {
             finish();
         } else if (viewId == R.id.top_openpicture) {
+            //TODO 打开相册页面
 //            RxPhotoTool.openLocalImage(mContext);
         }
     }
@@ -241,6 +242,7 @@ public class ScanerActivity extends Activity {
     }
 
     private DecodeThread decodeThread;
+
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder);
@@ -255,6 +257,7 @@ public class ScanerActivity extends Activity {
             return;
         }
 
+        //开始解码
         if (handler == null) {
             handler = new CaptureActivityHandler(this);
             handler.setFinishOig(inactivityTimer);
@@ -281,13 +284,13 @@ public class ScanerActivity extends Activity {
                 Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
                 if (rawResult != null) {
 //                    if (mScanerListener == null) {
-                        initDialogResult(rawResult);
+                    initDialogResult(rawResult);
 //                    } else {
 //                        mScanerListener.onSuccess("From to Picture", rawResult);
 //                    }
                 } else {
 //                    if (mScanerListener == null) {
-                        Toast.makeText(getApplicationContext(), "图片识别失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "图片识别失败", Toast.LENGTH_SHORT).show();
 //                    } else {
 //                        mScanerListener.onFail("From to Picture", "图片识别失败");
 //                    }

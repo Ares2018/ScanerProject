@@ -13,7 +13,6 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.scaner.scaner.R;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -22,8 +21,9 @@ import static android.content.ContentValues.TAG;
 
 
 /**
- * @author Vondear
- *         描述: 接受消息后解码
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 接收消息后转码
  */
 final class DecodeHandler extends Handler {
 

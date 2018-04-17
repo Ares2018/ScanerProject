@@ -22,7 +22,9 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * @author vondear
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 相机自动对焦
  */
 public final class AutoFocusCallback implements Camera.AutoFocusCallback {
 

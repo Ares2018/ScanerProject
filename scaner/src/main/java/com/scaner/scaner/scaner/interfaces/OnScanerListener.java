@@ -3,9 +3,9 @@ package com.scaner.scaner.scaner.interfaces;
 import com.google.zxing.Result;
 
 /**
- * 扫描结果
- * @author Vondear
- * @date 2017/9/22
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 扫描完成结果处理
  */
 
 public interface OnScanerListener {

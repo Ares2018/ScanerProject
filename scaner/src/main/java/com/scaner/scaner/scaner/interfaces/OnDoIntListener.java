@@ -1,8 +1,8 @@
 package com.scaner.scaner.scaner.interfaces;
 
 /**
- * @author Vondear
- * @date 2017/3/10
+ * @author wanglinjie
+ * @date 2018/4/17
  */
 
 public interface OnDoIntListener {

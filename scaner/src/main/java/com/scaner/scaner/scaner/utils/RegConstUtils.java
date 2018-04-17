@@ -5,8 +5,9 @@ import android.support.annotation.Nullable;
 import java.util.regex.Pattern;
 
 /**
- * Created by wanglinjie.
- * create time:2018/4/16  下午4:08
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 正则工具
  */
 
 public class RegConstUtils {

@@ -1,22 +1,20 @@
 package com.scaner.scaner.scaner.utils;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
-import com.scaner.scaner.R;
+import com.scaner.scaner.scaner.R;
 
 import java.io.IOException;
 
 import static android.content.Context.AUDIO_SERVICE;
 
 /**
- *
- * @author Vondear
- * @date 2017/10/11
- * 提示音工具
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 提示音工具类
  */
 
 public class BeepToolUtils {

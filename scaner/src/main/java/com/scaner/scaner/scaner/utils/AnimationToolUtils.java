@@ -21,8 +21,9 @@ import android.view.animation.ScaleAnimation;
 import com.scaner.scaner.scaner.interfaces.OnDoIntListener;
 
 /**
- * @author Vondear
- * @date 2017/3/15
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 扫描动画
  */
 
 public class AnimationToolUtils {

@@ -11,8 +11,9 @@ import com.scaner.scaner.scaner.utils.BeepToolUtils;
 
 
 /**
- * @author vondear
- *         描述: 扫描消息转发
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 扫描消息转发
  */
 public final class CaptureActivityHandler extends Handler {
 

@@ -14,10 +14,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * @author Vondear
- * @date 2017/10/11
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 图片解析
  */
-
 public class QrBarToolUtils {
 
     /**

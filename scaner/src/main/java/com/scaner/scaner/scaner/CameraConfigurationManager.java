@@ -11,7 +11,9 @@ import android.view.WindowManager;
 import java.util.regex.Pattern;
 
 /**
- * @author vondear
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 相机属性配型
  */
 final class CameraConfigurationManager {
 

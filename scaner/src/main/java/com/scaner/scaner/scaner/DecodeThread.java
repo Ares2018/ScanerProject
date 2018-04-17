@@ -6,8 +6,9 @@ import android.os.Looper;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @author Vondear
- *         描述: 解码线程
+ * @author wanglinjie
+ * @date 2018/4/17
+ * 解码线程
  */
 public final class DecodeThread extends Thread {
 
