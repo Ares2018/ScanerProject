@@ -128,7 +128,7 @@ public class ScanerActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        SurfaceView surfaceView = findViewById(R.id.capture_preview);
+        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.capture_preview);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             //Camera初始化
@@ -176,10 +176,10 @@ public class ScanerActivity extends Activity {
     }
 
     private void initView() {
-        mIvLight = findViewById(R.id.top_mask);
-        mContainer = findViewById(R.id.capture_containter);
-        mCropLayout = findViewById(R.id.capture_crop_layout);
-        mLlScanHelp = findViewById(R.id.ll_scan_help);
+        mIvLight = (ImageView) findViewById(R.id.top_mask);
+        mContainer = (RelativeLayout) findViewById(R.id.capture_containter);
+        mCropLayout = (RelativeLayout) findViewById(R.id.capture_crop_layout);
+        mLlScanHelp = (LinearLayout) findViewById(R.id.ll_scan_help);
 
 
     }
@@ -193,7 +193,7 @@ public class ScanerActivity extends Activity {
     }
 
     private void initScanerAnimation() {
-        ImageView mQrLineView = findViewById(R.id.capture_scan_line);
+        ImageView mQrLineView = (ImageView) findViewById(R.id.capture_scan_line);
         AnimationToolUtils.ScaleUpDowm(mQrLineView);
     }
 
@@ -347,25 +347,5 @@ public class ScanerActivity extends Activity {
 //
 //        RxSPTool.putContent(mContext, RxConstants.SP_SCAN_CODE, RxDataTool.stringToInt(RxSPTool.getContent(mContext, RxConstants.SP_SCAN_CODE)) + 1 + "");
     }
-
-//    //扫描结果
-//    public void handleDecode(Result result) {
-//        inactivityTimer.onActivity();
-//        //扫描成功之后的振动与声音提示
-//        BeepToolUtils.playBeep(this, vibrate);
-//
-//        String result1 = result.getText();
-//        Log.v("二维码/条形码 扫描结果", result1);
-//        if (mScanerListener == null) {
-//            Toast.makeText(getApplicationContext(), result1, Toast.LENGTH_SHORT).show();
-//            initDialogResult(result);
-//        } else {
-//            mScanerListener.onSuccess("From to Camera", result);
-//        }
-//    }
-//
-//    public Handler getHandler() {
-//        return handler;
-//    }
 
 }

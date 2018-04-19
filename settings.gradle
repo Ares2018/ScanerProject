@@ -1,1 +1,3 @@
 include ':app', ':scaner'
+include(':core-library')
+project(":core-library").projectDir = new File('../CoreProject/core')
