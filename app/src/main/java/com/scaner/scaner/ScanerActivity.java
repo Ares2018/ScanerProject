@@ -31,16 +31,12 @@ import com.scaner.scaner.scaner.utils.QrBarToolUtils;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
-
 /**
- * @author vondear
+ * 二维码扫描测试页面
+ * Created by wanglinjie.
+ * create time:2018/4/23  上午10:16
  */
 public class ScanerActivity extends Activity {
-
-    /**
-     * 扫描结果监听
-     */
-//    private OnScanerListener mScanerListener;
 
     private InactivityTimer inactivityTimer;
 
@@ -74,11 +70,6 @@ public class ScanerActivity extends Activity {
      */
     private boolean hasSurface;
 
-//    /**
-//     * 扫描成功后是否震动
-//     */
-//    private boolean vibrate = true;
-
     /**
      * 闪光灯开启状态
      */
@@ -94,24 +85,10 @@ public class ScanerActivity extends Activity {
      */
     private ImageView mIvLight;
 
-//    /**
-//     * 扫描结果显示框
-//     */
-//    private ScanerDialogSure rxDialogSure;
-
-//    /**
-//     * 设置扫描信息回调
-//     */
-//    public void setScanerListener(OnScanerListener scanerListener) {
-//        mScanerListener = scanerListener;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        RxBarTool.setNoTitle(this);
         setContentView(R.layout.activity_scaner_code);
-//        RxBarTool.setTransparentStatusBar(this);
         //界面控件初始化
         initView();
         //权限初始化
@@ -171,7 +148,6 @@ public class ScanerActivity extends Activity {
     @Override
     protected void onDestroy() {
         inactivityTimer.shutdown();
-//        mScanerListener = null;
         super.onDestroy();
     }
 
@@ -224,7 +200,6 @@ public class ScanerActivity extends Activity {
             finish();
         } else if (viewId == R.id.top_openpicture) {
             //TODO 打开相册页面
-//            RxPhotoTool.openLocalImage(mContext);
         }
     }
 
@@ -283,17 +258,9 @@ public class ScanerActivity extends Activity {
                 // 开始对图像资源解码
                 Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
                 if (rawResult != null) {
-//                    if (mScanerListener == null) {
                     initDialogResult(rawResult);
-//                    } else {
-//                        mScanerListener.onSuccess("From to Picture", rawResult);
-//                    }
                 } else {
-//                    if (mScanerListener == null) {
                     Toast.makeText(getApplicationContext(), "图片识别失败", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        mScanerListener.onFail("From to Picture", "图片识别失败");
-//                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -305,11 +272,6 @@ public class ScanerActivity extends Activity {
     private void initDialogResult(Result result) {
         BarcodeFormat type = result.getBarcodeFormat();
         String realContent = result.getText();
-
-//        if (rxDialogSure == null) {
-//            //提示弹窗
-//            rxDialogSure = new RxDialogSure(mContext);
-//        }
 
         if (BarcodeFormat.QR_CODE.equals(type)) {
             Toast.makeText(getApplicationContext(), "二维码扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
@@ -324,28 +286,6 @@ public class ScanerActivity extends Activity {
             handler.sendEmptyMessage(R.id.restart_preview);
         }
 
-//        rxDialogSure.setContent(realContent);
-//        rxDialogSure.setSureListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                rxDialogSure.cancel();
-//            }
-//        });
-//        rxDialogSure.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                if (handler != null) {
-//                    // 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
-//                    handler.sendEmptyMessage(R.id.restart_preview);
-//                }
-//            }
-//        });
-//
-//        if (!rxDialogSure.isShowing()) {
-//            rxDialogSure.show();
-//        }
-//
-//        RxSPTool.putContent(mContext, RxConstants.SP_SCAN_CODE, RxDataTool.stringToInt(RxSPTool.getContent(mContext, RxConstants.SP_SCAN_CODE)) + 1 + "");
     }
 
 }
