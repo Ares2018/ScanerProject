@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/capture_containter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/module_scaner_result_text"
+        android:textColor="?attr/module_core_808080"
+        android:textSize="@dimen/ts_16sp" />
+
+
+    <TextView
+        android:id="@+id/tv_text_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tv_text_tip"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:background="?attr/module_scaner_result_bg"
+        android:paddingBottom="6dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:paddingTop="6dp"
+        android:scrollbars="vertical"
+        android:textColor="?attr/tc_484848"
+        tools:text="当地时间10月2日上午，代表团抵达捷克首都布拉格，开始了对捷克的友好访问。代表团抵达时，捷克方面在机场举行了欢迎仪式，捷克总统特命代表、捷克总理对华事务全权顾问、捷中友好合作协会主席到机场迎接。"
+        />
+
+    <TextView
+        android:id="@+id/tv_text_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/module_scaner_result_tip"
+        android:textColor="?attr/module_core_808080"
+        android:textSize="@dimen/ts_12sp" />
+</RelativeLayout>

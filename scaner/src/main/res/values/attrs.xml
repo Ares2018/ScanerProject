@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SupportUiMode">
+
+        <!--系统自带属性-->
+        <attr name="colorPrimary" />
+        <attr name="colorPrimaryDark" />
+        <attr name="colorAccent" />
+        <attr name="module_scaner_result_bg" format="reference" />
+
+    </declare-styleable>
+
+</resources>

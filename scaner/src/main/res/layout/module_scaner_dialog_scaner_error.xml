@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="170dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:background="@drawable/bg_dialog_global"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:gravity="center"
+        android:text="二维码读取失败"
+        android:textColor="@color/tc_484848"
+        android:textSize="@dimen/ts_15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/dc_979797" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:gravity="center"
+        android:text="@string/module_core_tip_ok"
+        android:textColor="@color/tc_f44b50"
+        android:textSize="@dimen/ts_16sp" />
+
+</LinearLayout>

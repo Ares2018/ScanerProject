@@ -37,6 +37,5 @@ public class BaseApplication extends Application {
         setTheme(ThemeMode.isNightMode() ? R.style.CoreThemeNight_Base : R.style.AppTheme);
 
         AppUtils.setChannel("sb");
-
     }
 }

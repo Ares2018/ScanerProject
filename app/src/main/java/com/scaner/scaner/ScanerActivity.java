@@ -16,7 +16,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -28,15 +27,17 @@ import com.scaner.scaner.scaner.DecodeThread;
 import com.scaner.scaner.scaner.decoding.InactivityTimer;
 import com.scaner.scaner.scaner.utils.AnimationToolUtils;
 import com.scaner.scaner.scaner.utils.QrBarToolUtils;
+import com.zjrb.core.common.base.BaseActivity;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * 二维码扫描测试页面
  * Created by wanglinjie.
  * create time:2018/4/23  上午10:16
  */
-public class ScanerActivity extends Activity {
+public class ScanerActivity extends BaseActivity {
 
     private InactivityTimer inactivityTimer;
 
@@ -75,15 +76,10 @@ public class ScanerActivity extends Activity {
      */
     private boolean mFlashing = true;
 
-    /**
-     * 生成二维码 & 条形码 布局
-     */
-    private LinearLayout mLlScanHelp;
-
-    /**
-     * 闪光灯 按钮
-     */
-    private ImageView mIvLight;
+//    /**
+//     * 闪光灯 按钮
+//     */
+//    private ImageView mIvLight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +95,28 @@ public class ScanerActivity extends Activity {
         CameraManager.init(getApplicationContext());
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
+    }
+
+    private void initView() {
+//        mIvLight = (ImageView) findViewById(R.id.top_mask);
+        mContainer = (RelativeLayout) findViewById(R.id.capture_containter);
+        mCropLayout = (RelativeLayout) findViewById(R.id.capture_crop_layout);
+    }
+
+    /**
+     * 需要打开相机权限
+     */
+    private void initPermission() {
+        //请求Camera权限 与 文件读写 权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+    private void initScanerAnimation() {
+        ImageView mQrLineView = (ImageView) findViewById(R.id.capture_scan_line);
+        AnimationToolUtils.ScaleUpDowm(mQrLineView);
     }
 
     @SuppressWarnings("deprecation")
@@ -151,73 +169,58 @@ public class ScanerActivity extends Activity {
         super.onDestroy();
     }
 
-    private void initView() {
-        mIvLight = (ImageView) findViewById(R.id.top_mask);
-        mContainer = (RelativeLayout) findViewById(R.id.capture_containter);
-        mCropLayout = (RelativeLayout) findViewById(R.id.capture_crop_layout);
-        mLlScanHelp = (LinearLayout) findViewById(R.id.ll_scan_help);
-
-
-    }
-
-    private void initPermission() {
-        //请求Camera权限 与 文件读写 权限
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
-    }
-
-    private void initScanerAnimation() {
-        ImageView mQrLineView = (ImageView) findViewById(R.id.capture_scan_line);
-        AnimationToolUtils.ScaleUpDowm(mQrLineView);
-    }
-
-    public int getCropWidth() {
-        return mCropWidth;
-    }
-
-    public void setCropWidth(int cropWidth) {
+    private void setCropWidth(int cropWidth) {
         mCropWidth = cropWidth;
         CameraManager.FRAME_WIDTH = mCropWidth;
 
     }
 
-    public int getCropHeight() {
-        return mCropHeight;
-    }
-
-    public void setCropHeight(int cropHeight) {
+    private void setCropHeight(int cropHeight) {
         this.mCropHeight = cropHeight;
         CameraManager.FRAME_HEIGHT = mCropHeight;
     }
 
     public void btn(View view) {
         int viewId = view.getId();
-        if (viewId == R.id.top_mask) {
-            light();
-        } else if (viewId == R.id.top_back) {
-            finish();
-        } else if (viewId == R.id.top_openpicture) {
-            //TODO 打开相册页面
-        }
+//        if (viewId == R.id.top_mask) {
+//            light();
+//        }
+//        else if (viewId == R.id.top_back) {
+//            finish();
+//        }
+//        else if (viewId == R.id.top_openpicture) {
+//            //TODO 打开相册页面 默认选择一张图片
+//            Nav.with(this)
+//                    .toPath("/core/MediaSelectActivity", 10);
+//        }
     }
 
-    private void light() {
-        if (mFlashing) {
-            mFlashing = false;
-            // 开闪光灯
-            CameraManager.get().openLight();
-        } else {
-            mFlashing = true;
-            // 关闪光灯
-            CameraManager.get().offLight();
-        }
+//    /**
+//     * 闪光灯管理
+//     */
+//    private void light() {
+//        if (mFlashing) {
+//            mFlashing = false;
+//            // 开闪光灯
+//            CameraManager.get().openLight();
+//        } else {
+//            mFlashing = true;
+//            // 关闪光灯
+//            CameraManager.get().offLight();
+//        }
+//
+//    }
 
-    }
+//    /**
+//     * 解码线程
+//     */
+//    private DecodeThread decodeThread;
 
-    private DecodeThread decodeThread;
-
+    /**
+     * 初始化相机
+     *
+     * @param surfaceHolder
+     */
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder);
@@ -232,60 +235,69 @@ public class ScanerActivity extends Activity {
             return;
         }
 
-        //开始解码
-        if (handler == null) {
-            handler = new CaptureActivityHandler(this);
-            handler.setFinishOig(inactivityTimer);
-            decodeThread = new DecodeThread(handler);
-            decodeThread.start();
-            handler.setDecodeThread(decodeThread);
-        }
+//        //开始解码
+//        if (handler == null) {
+//            handler = new CaptureActivityHandler(this);
+//            handler.setFinishOig(inactivityTimer);
+//            decodeThread = new DecodeThread(handler);
+//            decodeThread.start();
+//            handler.setDecodeThread(decodeThread);
+//        }
     }
-    //========================================打开本地图片识别二维码 end=================================
 
-    //--------------------------------------打开本地图片识别二维码 start---------------------------------
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            ContentResolver resolver = getContentResolver();
-            // 照片的原始资源地址
-            Uri originalUri = data.getData();
-            try {
-                // 使用ContentProvider通过URI获取原始图片
-                Bitmap photo = MediaStore.Images.Media.getBitmap(resolver, originalUri);
-
-                // 开始对图像资源解码
-                Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
-                if (rawResult != null) {
-                    initDialogResult(rawResult);
-                } else {
-                    Toast.makeText(getApplicationContext(), "图片识别失败", Toast.LENGTH_SHORT).show();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    //==============================================================================================解析结果 及 后续处理 end
-
-    private void initDialogResult(Result result) {
-        BarcodeFormat type = result.getBarcodeFormat();
-        String realContent = result.getText();
-
-        if (BarcodeFormat.QR_CODE.equals(type)) {
-            Toast.makeText(getApplicationContext(), "二维码扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
-        } else if (BarcodeFormat.EAN_13.equals(type)) {
-            Toast.makeText(getApplicationContext(), "条形码扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
-        }
-        //支持重新扫描
-        if (handler != null) {
-            // 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
-            handler.sendEmptyMessage(R.id.restart_preview);
-        }
-
-    }
+//    /**
+//     * 打开相册后回调
+//     *
+//     * @param requestCode
+//     * @param resultCode
+//     * @param data
+//     */
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            ContentResolver resolver = getContentResolver();
+//            // 照片的原始资源地址
+//            Uri originalUri = data.getData();
+//            try {
+//                // 使用ContentProvider通过URI获取原始图片
+//                Bitmap photo = MediaStore.Images.Media.getBitmap(resolver, originalUri);
+//
+//                // 开始对图像资源解码
+//                Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
+//                if (rawResult != null) {
+//                    initDialogResult(rawResult);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "图片识别失败", Toast.LENGTH_SHORT).show();
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//
+//    /**
+//     * 解析后处理
+//     *
+//     * @param result
+//     */
+//    private void initDialogResult(Result result) {
+//        BarcodeFormat type = result.getBarcodeFormat();
+//        String realContent = result.getText();
+//
+//        if (BarcodeFormat.QR_CODE.equals(type)) {
+//            Toast.makeText(getApplicationContext(), "二维码扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
+//        } else if (BarcodeFormat.EAN_13.equals(type)) {
+//            Toast.makeText(getApplicationContext(), "条形码扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(getApplicationContext(), "扫描结果:" + realContent, Toast.LENGTH_SHORT).show();
+//        }
+//        //支持重新扫描
+//        if (handler != null) {
+//            // 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
+//            handler.sendEmptyMessage(R.id.restart_preview);
+//        }
+//
+//    }
 
 }

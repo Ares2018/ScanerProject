@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.scaner.scaner.scaner.decoding.InactivityTimer;
+import com.scaner.scaner.scaner.interfaces.OnScanerListener;
 import com.scaner.scaner.scaner.utils.BeepToolUtils;
 
 
@@ -19,7 +20,13 @@ public final class CaptureActivityHandler extends Handler {
 
     DecodeThread decodeThread = null;
     Activity activity = null;
+    private OnScanerListener listener;
+
     private State state;
+
+    public void setListener(OnScanerListener listener) {
+        this.listener = listener;
+    }
 
     public CaptureActivityHandler(Activity activity) {
         this.activity = activity;
@@ -32,6 +39,11 @@ public final class CaptureActivityHandler extends Handler {
         restartPreviewAndDecode();
     }
 
+    /**
+     * 收到扫码消息
+     *
+     * @param message
+     */
     @Override
     public void handleMessage(Message message) {
         if (message.what == R.id.auto_focus) {
@@ -42,21 +54,20 @@ public final class CaptureActivityHandler extends Handler {
             restartPreviewAndDecode();
         } else if (message.what == R.id.decode_succeeded) {
             state = State.SUCCESS;
-//            activity.handleDecode((Result) message.obj);// 解析成功，回调
             inactivityTimer.onActivity();
             //扫描成功之后的振动与声音提示
             BeepToolUtils.playBeep(activity, true);
-            //TODO WLJ 打印扫描结果
             Toast.makeText(activity.getApplicationContext(), ((Result) message.obj).getText(), Toast.LENGTH_SHORT).show();
-
+            if(message.obj != null){
+                listener.onSuccess((Result) message.obj);
+            }else{
+                listener.onFail();
+            }
         } else if (message.what == R.id.decode_failed) {
+            //继续扫描
             state = State.PREVIEW;
             CameraManager.get().requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
         }
-        //TODO  WLJ
-        // 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
-//        sendEmptyMessage(R.id.restart_preview);
-
     }
 
     public void quitSynchronously() {

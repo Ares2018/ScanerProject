@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: 'http://10.100.62.98:8086/nexus/service/local/artifact/maven/redirect?r=releases&g=cn.daily.android&a=publish&e=gradle&v=0.0.4'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
@@ -29,4 +30,10 @@ dependencies {
 
     //Zxing核心包
     compile 'com.google.zxing:core:3.3.0'
+    compile project(':core-library')
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+//    compile('cn.daily.android:core-library:5.3.0.3-SNAPSHOT') {
+//        exclude group: 'cn.daily.android:analytics', module: 'analytics'
+//    }
 }

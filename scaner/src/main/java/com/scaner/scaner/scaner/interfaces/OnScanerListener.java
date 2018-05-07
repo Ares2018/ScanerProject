@@ -9,7 +9,7 @@ import com.google.zxing.Result;
  */
 
 public interface OnScanerListener {
-    void onSuccess(String type, Result result);
+    void onSuccess(Result result);
 
-    void onFail(String type, String message);
+    void onFail();
 }

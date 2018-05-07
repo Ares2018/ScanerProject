@@ -14,7 +14,7 @@ public final class DecodeThread extends Thread {
 
     private final CountDownLatch handlerInitLatch;
     CaptureActivityHandler mHandler;
-    private Handler handler;
+    private DecodeHandler handler;
 
     public DecodeThread(CaptureActivityHandler mHandler) {
         this.mHandler = mHandler;

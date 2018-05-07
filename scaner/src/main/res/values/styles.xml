@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="ScanerDayTheme">
+        <item name="module_scaner_result_bg">@drawable/module_scaner_result_bg</item>
+    </style>
+
+    <style name="ScanerNightTheme">
+        <item name="module_scaner_result_bg">@drawable/module_scaner_result_bg_night
+        </item>
+    </style>
+
+</resources>

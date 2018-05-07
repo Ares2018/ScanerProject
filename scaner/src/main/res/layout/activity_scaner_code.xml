@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/capture_containter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/capture_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/capture_crop_layout"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/module_scaner_capture"
+        android:contentDescription="@string/app_name">
+
+        <ImageView
+            android:id="@+id/capture_scan_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:background="@mipmap/module_scaner_kakalib_scan_ray"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_scaner_text"
+        android:layout_width="227dp"
+        android:layout_height="33.5dp"
+        android:layout_below="@+id/capture_crop_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16.5dp"
+        android:background="@drawable/module_scaner_text_bg"
+        android:maxLines="1"
+        android:paddingBottom="9.5dp"
+        android:paddingLeft="23dp"
+        android:paddingRight="23dp"
+        android:paddingTop="7.5dp"
+        android:text="@string/module_scaner_scaner_text"
+        android:textSize="@dimen/ts_12sp" />
+
+</RelativeLayout>
