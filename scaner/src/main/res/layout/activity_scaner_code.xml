@@ -47,4 +47,46 @@
         android:text="@string/module_scaner_scaner_text"
         android:textSize="@dimen/ts_12sp" />
 
+    <!--覆盖层-->
+    <RelativeLayout
+        android:id="@+id/ry_over"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_toast"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/module_core_ic_scaner_loading"
+            />
+
+        <TextView
+            android:id="@+id/tv_scaner_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_toast"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:text="未找到二维码"
+            android:textColor="@color/bc_ffffff"
+            android:textSize="@dimen/ts_18sp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_toast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="正在读取..."
+            android:textColor="@color/tc_ffffff"
+            android:textSize="@dimen/ts_12sp" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

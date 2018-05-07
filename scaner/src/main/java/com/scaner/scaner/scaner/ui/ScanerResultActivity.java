@@ -52,7 +52,7 @@ public class ScanerResultActivity extends BaseActivity {
             Uri data = intent.getData();
             if (data != null) {
                 if (data.getQueryParameter(IKey.SCANER_TEXT) != null) {
-                    scanerText = data.getQueryParameter(IKey.ID);
+                    scanerText = data.getQueryParameter(IKey.SCANER_TEXT);
                 }
             }
 

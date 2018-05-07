@@ -58,10 +58,8 @@ public final class CaptureActivityHandler extends Handler {
             //扫描成功之后的振动与声音提示
             BeepToolUtils.playBeep(activity, true);
             Toast.makeText(activity.getApplicationContext(), ((Result) message.obj).getText(), Toast.LENGTH_SHORT).show();
-            if(message.obj != null){
+            if (message.obj != null) {
                 listener.onSuccess((Result) message.obj);
-            }else{
-                listener.onFail();
             }
         } else if (message.what == R.id.decode_failed) {
             //继续扫描

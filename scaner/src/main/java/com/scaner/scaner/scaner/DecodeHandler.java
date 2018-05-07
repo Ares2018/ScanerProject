@@ -30,12 +30,6 @@ final class DecodeHandler extends Handler {
     private final MultiFormatReader multiFormatReader;
     private CaptureActivityHandler mHandler = null;
 
-    private OnLoadingListener loadingListener = null;
-
-    public void setLoadingListener(OnLoadingListener loadingListener) {
-        this.loadingListener = loadingListener;
-    }
-
     DecodeHandler(CaptureActivityHandler handler) {
         multiFormatReader = new MultiFormatReader();
 
@@ -111,8 +105,6 @@ final class DecodeHandler extends Handler {
         if (rawResult != null) {
             long end = System.currentTimeMillis();
             Log.d(TAG, "Found barcode (" + (end - start) + " ms):\n" + rawResult.toString());
-            //TODO 这里加载中的状态是不对的，正常扫描中也会出现加载中状态
-            loadingListener.onLoading();
             Message message = Message.obtain(mHandler, R.id.decode_succeeded, rawResult);
             Bundle bundle = new Bundle();
             bundle.putParcelable("barcode_bitmap", source.renderCroppedGreyscaleBitmap());

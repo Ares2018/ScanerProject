@@ -8,27 +8,31 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.zxing.Result;
 import com.scaner.scaner.scaner.CameraManager;
 import com.scaner.scaner.scaner.CaptureActivityHandler;
 import com.scaner.scaner.scaner.DecodeThread;
 import com.scaner.scaner.scaner.R;
+import com.scaner.scaner.scaner.R2;
 import com.scaner.scaner.scaner.decoding.InactivityTimer;
-import com.scaner.scaner.scaner.interfaces.OnReScanerListener;
 import com.scaner.scaner.scaner.interfaces.OnScanerListener;
 import com.scaner.scaner.scaner.ui.dialog.ScanerErrorDialog;
-import com.scaner.scaner.scaner.ui.dialog.ScanerLoadingDialog;
 import com.scaner.scaner.scaner.utils.AnimationToolUtils;
 import com.scaner.scaner.scaner.utils.QrBarToolUtils;
 import com.zjrb.core.common.base.BaseFragment;
+import com.zjrb.core.common.global.IKey;
 import com.zjrb.core.domain.MediaEntity;
 import com.zjrb.core.nav.Nav;
 
@@ -36,13 +40,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 二维码扫描fragment
  * Created by wanglinjie.
  * create time:2018/5/3  上午9:24
  */
 
-public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback, OnReScanerListener {
+public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback {
+
+    @BindView(R2.id.capture_preview)
+    SurfaceView surfaceView;
+    @BindView(R2.id.capture_scan_line)
+    ImageView mQrLineView;
+    @BindView(R2.id.capture_crop_layout)
+    RelativeLayout mCropLayout;
+    @BindView(R2.id.iv_icon)
+    ImageView mIcon;
+    @BindView(R2.id.tv_scaner_error)
+    TextView mScanerError;
+    @BindView(R2.id.tv_toast)
+    TextView mTextToast;
+    @BindView(R2.id.ry_over)
+    RelativeLayout mContainerOver;
+    @BindView(R2.id.capture_containter)
+    RelativeLayout mContainer;
 
     private InactivityTimer inactivityTimer;
 
@@ -50,23 +74,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      * 扫描处理
      */
     private CaptureActivityHandler handler;
-
-    /**
-     * 整体根布局
-     */
-    private RelativeLayout mContainer = null;
-
-    /**
-     * 扫描框根布局
-     */
-    private RelativeLayout mCropLayout = null;
-
-    /**
-     * 扫描动画布局
-     */
-    private ImageView mQrLineView = null;
-
-    private SurfaceView surfaceView = null;
 
     /**
      * 扫描边界的宽度
@@ -110,9 +117,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.activity_scaner_code, container, false);
-        initView(v);
+        ButterKnife.bind(this, v);
         //扫描动画初始化
-        initScanerAnimation(v);
+        AnimationToolUtils.ScaleUpDowm(mQrLineView);
         //初始化 CameraManager
         CameraManager.init(getContext().getApplicationContext());
         hasSurface = false;
@@ -120,22 +127,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         return v;
     }
 
-
-    private void initView(View v) {
-        mContainer = (RelativeLayout) v.findViewById(R.id.capture_containter);
-        mCropLayout = (RelativeLayout) v.findViewById(R.id.capture_crop_layout);
-        mQrLineView = (ImageView) v.findViewById(R.id.capture_scan_line);
-        surfaceView = (SurfaceView) v.findViewById(R.id.capture_preview);
-    }
-
-    /**
-     * 初始化扫描动画
-     *
-     * @param v
-     */
-    private void initScanerAnimation(View v) {
-        AnimationToolUtils.ScaleUpDowm(mQrLineView);
-    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -203,7 +194,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      * 解码线程
      */
     private DecodeThread decodeThread;
-    private ScanerLoadingDialog scanerLoadingDialog;
 
     /**
      * 初始化相机
@@ -248,11 +238,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            scanerLoadingDialog = new ScanerLoadingDialog(getContext());
-            scanerLoadingDialog.show();
             ContentResolver resolver = getActivity().getContentResolver();
             // 照片的原始资源地址
-
+            startLoadingAnim();
             if (data != null) {
                 ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
                 if (list != null && !list.isEmpty()) {
@@ -267,12 +255,12 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
                     // 开始对图像资源解码
                     Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
                     if (rawResult != null) {
-                        initDialogResult(rawResult);
+                        onSuccess(rawResult);
                     } else {
-                        setErrDialogStat(scanerLoadingDialog);
+                        onFail();
                     }
                 } else {
-                    setErrDialogStat(scanerLoadingDialog);
+                    onFail();
                 }
 
             } catch (IOException e) {
@@ -281,38 +269,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         }
     }
 
-    /**
-     * 图片扫码错误状态显示
-     *
-     * @param scanerLoadingDialog
-     */
-    private void setErrDialogStat(ScanerLoadingDialog scanerLoadingDialog) {
-        if (scanerLoadingDialog != null) {
-            scanerLoadingDialog.getIvIcon().setVisibility(View.GONE);
-            scanerLoadingDialog.getTvScanerError().setVisibility(View.VISIBLE);
-            scanerLoadingDialog.getTvScanerError().setText("未找到二维码");
-            scanerLoadingDialog.getTvToast().setText("轻触屏幕继续扫描");
-        }
-    }
-
-    /**
-     * 解析后处理
-     *
-     * @param result
-     */
-    private void initDialogResult(Result result) {
-        if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
-            Nav.with(this).toPath(result.getText());//文本
-        } else {
-            Nav.with(this).toPath("/ui/ScanerResultActivity");
-        }
-        //支持重新扫描
-        if (handler != null) {
-            // 连续扫描，不发送此消息扫描一次结束后就不能再次扫描
-            handler.sendEmptyMessage(R.id.restart_preview);
-        }
-
-    }
 
     /**
      * 二维码扫描失败弹出dialog点击确定按钮
@@ -321,12 +277,10 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onOkClick(View v) {
-        if (scanerLoadingDialog != null && scanerLoadingDialog.isShowing()) {
-            scanerLoadingDialog.dismiss();
+        if (mContainerOver.getVisibility() == View.VISIBLE) {
+            mContainerOver.setVisibility(View.GONE);
         }
-        if (handler != null) {
-            handler.sendEmptyMessage(R.id.restart_preview);
-        }
+        onReScaner();
     }
 
     /**
@@ -336,15 +290,21 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onSuccess(Result result) {
-        scanerLoadingDialog.dismiss();
+        stopLoadingAnim();
         //链接
         if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
-            Nav.with(this).toPath(result.getText());//文本
+            Nav.with(this).toPath(result.getText());//链接
+            onReScaner();
         } else {
-            Nav.with(this).toPath("/ui/ScanerResultActivity");
-        }
-        if (handler != null) {
-            handler.sendEmptyMessage(R.id.restart_preview);
+            //文本
+            if (!TextUtils.isEmpty(result.getText())) {
+                Bundle bundle = new Bundle();
+                bundle.putString(IKey.SCANER_TEXT, result.getText());
+                Nav.with(this).setExtras(bundle).toPath("/ui/ScanerResultActivity");
+                onReScaner();
+            } else {
+                onFail();
+            }
         }
     }
 
@@ -355,6 +315,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onFail() {
+        stopLoadingAnim();
         errDialog = new ScanerErrorDialog(getContext());
         errDialog.show();
     }
@@ -363,9 +324,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      * 关闭dialog
      */
     private void dismissDialog() {
-        if (scanerLoadingDialog != null && scanerLoadingDialog.isShowing()) {
-            scanerLoadingDialog.dismiss();
-        }
         if (errDialog != null && errDialog.isShowing()) {
             errDialog.dismiss();
         }
@@ -374,10 +332,40 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     /**
      * 重新进行二维码扫描
      */
-    @Override
-    public void onReScaner() {
+    private void onReScaner() {
         if (handler != null) {
             handler.sendEmptyMessage(R.id.restart_preview);
         }
+    }
+
+    /**
+     * 启动加载动画
+     */
+    private void startLoadingAnim() {
+        if (mContainerOver.getVisibility() == View.GONE) {
+            mContainerOver.setVisibility(View.VISIBLE);
+        }
+        if (mIcon.getVisibility() == View.GONE) {
+            mIcon.setVisibility(View.VISIBLE);
+        }
+
+        if (mScanerError.getVisibility() == View.VISIBLE) {
+            mScanerError.setVisibility(View.VISIBLE);
+        }
+        mTextToast.setText("正在读取...");
+        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.module_scaner_loading_rotate);
+        if (rotate != null) {
+            mIcon.startAnimation(rotate);
+        } else {
+            mIcon.setAnimation(rotate);
+            mIcon.startAnimation(rotate);
+        }
+    }
+
+    /**
+     * 关闭加载动画
+     */
+    private void stopLoadingAnim() {
+        mIcon.clearAnimation();
     }
 }
