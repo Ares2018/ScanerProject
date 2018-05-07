@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aliya.view.fitsys.FitWindowsFrameLayout;
 import com.google.zxing.Result;
 import com.scaner.scaner.scaner.CameraManager;
 import com.scaner.scaner.scaner.CaptureActivityHandler;
@@ -57,16 +59,14 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     ImageView mQrLineView;
     @BindView(R2.id.capture_crop_layout)
     RelativeLayout mCropLayout;
-    @BindView(R2.id.iv_icon)
+    @BindView(R2.id.iv_loading)
     ImageView mIcon;
-    @BindView(R2.id.tv_scaner_error)
-    TextView mScanerError;
     @BindView(R2.id.tv_toast)
     TextView mTextToast;
     @BindView(R2.id.ry_over)
     RelativeLayout mContainerOver;
     @BindView(R2.id.capture_containter)
-    RelativeLayout mContainer;
+    FitWindowsFrameLayout mContainer;
 
     private InactivityTimer inactivityTimer;
 
@@ -115,16 +115,19 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.activity_scaner_code, container, false);
-        ButterKnife.bind(this, v);
+        return inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
         //扫描动画初始化
         AnimationToolUtils.ScaleUpDowm(mQrLineView);
         //初始化 CameraManager
         CameraManager.init(getContext().getApplicationContext());
         hasSurface = false;
         inactivityTimer = new InactivityTimer(getActivity());
-        return v;
     }
 
 
@@ -317,6 +320,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     public void onFail() {
         stopLoadingAnim();
         errDialog = new ScanerErrorDialog(getContext());
+        errDialog.setmOnClickCallback(this);
         errDialog.show();
     }
 
@@ -345,15 +349,8 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         if (mContainerOver.getVisibility() == View.GONE) {
             mContainerOver.setVisibility(View.VISIBLE);
         }
-        if (mIcon.getVisibility() == View.GONE) {
-            mIcon.setVisibility(View.VISIBLE);
-        }
 
-        if (mScanerError.getVisibility() == View.VISIBLE) {
-            mScanerError.setVisibility(View.VISIBLE);
-        }
-        mTextToast.setText("正在读取...");
-        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.module_scaner_loading_rotate);
+        Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.module_scaner_loading_rotate);
         if (rotate != null) {
             mIcon.startAnimation(rotate);
         } else {

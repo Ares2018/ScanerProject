@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/capture_containter"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<com.aliya.view.fitsys.FitWindowsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:id="@+id/capture_containter"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
 
     <SurfaceView
         android:id="@+id/capture_preview"
@@ -17,7 +17,7 @@
         android:id="@+id/capture_crop_layout"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:background="@mipmap/module_scaner_capture"
         android:contentDescription="@string/app_name">
 
@@ -29,58 +29,47 @@
             android:layout_margin="5dp"
             android:background="@mipmap/module_scaner_kakalib_scan_ray"
             android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tv_scaner_text"
+            android:layout_width="227dp"
+            android:layout_height="33.5dp"
+            android:layout_below="@+id/capture_scan_line"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16.5dp"
+            android:background="@drawable/module_scaner_text_bg"
+            android:maxLines="1"
+            android:paddingBottom="9.5dp"
+            android:paddingLeft="23dp"
+            android:paddingRight="23dp"
+            android:paddingTop="7.5dp"
+            android:text="@string/module_scaner_scaner_text"
+            android:textSize="@dimen/ts_12sp" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_scaner_text"
-        android:layout_width="227dp"
-        android:layout_height="33.5dp"
-        android:layout_below="@+id/capture_crop_layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16.5dp"
-        android:background="@drawable/module_scaner_text_bg"
-        android:maxLines="1"
-        android:paddingBottom="9.5dp"
-        android:paddingLeft="23dp"
-        android:paddingRight="23dp"
-        android:paddingTop="7.5dp"
-        android:text="@string/module_scaner_scaner_text"
-        android:textSize="@dimen/ts_12sp" />
 
     <!--覆盖层-->
     <RelativeLayout
         android:id="@+id/ry_over"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#99000000"
         android:gravity="center"
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/iv_icon"
+            android:id="@+id/iv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tv_toast"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/module_core_ic_scaner_loading"
-            />
-
-        <TextView
-            android:id="@+id/tv_scaner_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tv_toast"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:text="未找到二维码"
-            android:textColor="@color/bc_ffffff"
-            android:textSize="@dimen/ts_18sp"
-            android:visibility="gone"
+            android:src="@mipmap/module_scaner_ic_scaner_loading"
             />
 
         <TextView
             android:id="@+id/tv_toast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_loading"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="正在读取..."
@@ -89,4 +78,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</com.aliya.view.fitsys.FitWindowsFrameLayout>

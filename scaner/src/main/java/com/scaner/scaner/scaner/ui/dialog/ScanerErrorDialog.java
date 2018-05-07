@@ -26,11 +26,17 @@ public class ScanerErrorDialog extends android.app.AlertDialog implements View.O
     private View view;
 
     private Button btnOk;
+
+
     private OnClickCallback mOnClickCallback;
 
     public ScanerErrorDialog(Context context) {
         super(context, android.R.style.Theme_Dialog);
         initView();
+    }
+
+    public void setmOnClickCallback(OnClickCallback mOnClickCallback) {
+        this.mOnClickCallback = mOnClickCallback;
     }
 
     @Override
