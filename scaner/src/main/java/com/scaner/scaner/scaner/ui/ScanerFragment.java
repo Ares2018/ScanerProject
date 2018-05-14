@@ -29,6 +29,7 @@ import com.scaner.scaner.scaner.DecodeThread;
 import com.scaner.scaner.scaner.R;
 import com.scaner.scaner.scaner.R2;
 import com.scaner.scaner.scaner.decoding.InactivityTimer;
+import com.scaner.scaner.scaner.interfaces.OnCloseLightListen;
 import com.scaner.scaner.scaner.interfaces.OnScanerListener;
 import com.scaner.scaner.scaner.ui.dialog.ScanerErrorDialog;
 import com.scaner.scaner.scaner.utils.AnimationToolUtils;
@@ -90,6 +91,8 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     private boolean hasSurface;
 
+    private OnCloseLightListen  lightListen;
+
     /**
      * 私有构造器
      */
@@ -105,6 +108,10 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     public static ScanerFragment newInstance() {
         ScanerFragment fragment = new ScanerFragment();
         return fragment;
+    }
+
+    public void setLightListen(OnCloseLightListen lightListen) {
+        this.lightListen = lightListen;
     }
 
     @Override
@@ -294,6 +301,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     @Override
     public void onSuccess(Result result) {
         stopLoadingAnim();
+        lightListen.closeLight();
         //链接
         if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
             Nav.with(this).toPath(result.getText());//链接

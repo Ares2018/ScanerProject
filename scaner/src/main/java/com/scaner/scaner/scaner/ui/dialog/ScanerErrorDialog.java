@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.scaner.scaner.scaner.R;
-import com.zjrb.core.utils.UIUtils;
 
 
 /**
@@ -50,7 +49,7 @@ public class ScanerErrorDialog extends android.app.AlertDialog implements View.O
         setCanceledOnTouchOutside(false);
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
-        params.width = UIUtils.dip2px(170);
+        params.width = dip2px(170);
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(params);
 
@@ -59,6 +58,14 @@ public class ScanerErrorDialog extends android.app.AlertDialog implements View.O
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //因为某些机型是虚拟按键的,所以要加上以下设置防止挡住按键.
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    /**
+     * dip转换px
+     */
+    private int dip2px(float dip) {
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        return (int) (dip * scale + 0.5f);
     }
 
 

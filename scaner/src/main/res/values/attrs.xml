@@ -7,6 +7,8 @@
         <attr name="colorPrimaryDark" />
         <attr name="colorAccent" />
         <attr name="module_scaner_result_bg" format="reference" />
+        <attr name="module_scaner_808080" format="color" />
+        <attr name="module_scaner_tc_484848" format="color|reference" />
 
     </declare-styleable>
 

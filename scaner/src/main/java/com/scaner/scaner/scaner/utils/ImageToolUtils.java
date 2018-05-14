@@ -1419,4 +1419,5 @@ public class ImageToolUtils {
         if (data.length == 0) return null;
         return BitmapFactory.decodeByteArray(data, offset, data.length);
     }
+
 }

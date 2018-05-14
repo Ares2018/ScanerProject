@@ -3,7 +3,7 @@
               android:layout_width="170dp"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:background="@drawable/bg_dialog_global"
+              android:background="@drawable/module_scaner_bg_dialog_global"
               android:orientation="vertical">
 
     <TextView
@@ -27,7 +27,7 @@
         android:layout_weight="1"
         android:background="@null"
         android:gravity="center"
-        android:text="@string/module_core_tip_ok"
+        android:text="确定"
         android:textColor="@color/tc_f44b50"
         android:textSize="@dimen/ts_16sp" />
 

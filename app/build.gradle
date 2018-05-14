@@ -32,4 +32,7 @@ dependencies {
     compile project(':scaner')
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+//    compile('cn.daily.android:core-library:5.3.0.3-SNAPSHOT') {
+//        exclude group: 'cn.daily.android:analytics', module: 'analytics'
+//    }
 }

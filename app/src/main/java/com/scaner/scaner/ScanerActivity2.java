@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.scaner.scaner.scaner.CameraManager;
+import com.scaner.scaner.scaner.interfaces.OnCloseLightListen;
 import com.scaner.scaner.scaner.ui.ScanerFragment;
 import com.zjrb.core.common.base.BaseActivity;
 import com.zjrb.core.nav.Nav;
@@ -24,12 +25,12 @@ import butterknife.OnClick;
  * Created by wanglinjie.
  * create time:2018/4/23  上午10:16
  */
-public class ScanerActivity2 extends BaseActivity {
+public class ScanerActivity2 extends BaseActivity implements OnCloseLightListen {
     @BindView(R.id.iv_light)
     ImageView ivLight;
 
     /**
-     * 闪光灯开启状态
+     * 关闭闪光灯
      */
     private boolean mFlashing = true;
 
@@ -46,6 +47,7 @@ public class ScanerActivity2 extends BaseActivity {
 
     private void init() {
         scanerFragment = ScanerFragment.newInstance();
+        scanerFragment.setLightListen(this);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.v_container, scanerFragment).commit();
     }
@@ -80,7 +82,7 @@ public class ScanerActivity2 extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back,R.id.iv_album, R.id.iv_light})
+    @OnClick({R.id.iv_back, R.id.iv_album, R.id.iv_light})
     public void onClick(View v) {
         if (ClickTracker.isDoubleClick()) return;
         //点击图集
@@ -92,6 +94,31 @@ public class ScanerActivity2 extends BaseActivity {
             light();
         } else if (v.getId() == R.id.iv_back) {
             finish();
+        }
+    }
+
+    /**
+     * 关闭闪光灯
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFlashing = true;
+        // 关闪光灯
+        CameraManager.get().offLight();
+        ivLight.setSelected(false);
+    }
+
+    /**
+     * 关闭闪光灯
+     */
+    @Override
+    public void closeLight() {
+        if (!mFlashing) {
+            mFlashing = true;
+            // 关闪光灯
+            CameraManager.get().offLight();
+            ivLight.setSelected(false);
         }
     }
 }

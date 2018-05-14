@@ -2,11 +2,15 @@
 
     <style name="ScanerDayTheme">
         <item name="module_scaner_result_bg">@drawable/module_scaner_result_bg</item>
+        <item name="module_scaner_808080">@color/tc_808080</item>
+        <item name="module_scaner_tc_484848">@color/tc_484848</item>
     </style>
 
     <style name="ScanerNightTheme">
         <item name="module_scaner_result_bg">@drawable/module_scaner_result_bg_night
         </item>
+        <item name="module_scaner_808080">@color/tc_484848_night</item>
+        <item name="module_scaner_tc_484848">@color/tc_484848_night</item>
     </style>
 
 </resources>

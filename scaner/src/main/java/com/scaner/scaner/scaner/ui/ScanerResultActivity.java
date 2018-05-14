@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 二维码扫描测试页面
+ * 二维码扫描结果页面
  * Created by wanglinjie.
  * create time:2018/4/23  上午10:16
  */

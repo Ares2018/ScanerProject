@@ -27,10 +27,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile 'com.android.support:appcompat-v7:25.3.1'
-
     //Zxing核心包
     compile 'com.google.zxing:core:3.3.0'
-//    compile project(':core-library')
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile('cn.daily.android:core-library:5.3.0.3-SNAPSHOT') {
