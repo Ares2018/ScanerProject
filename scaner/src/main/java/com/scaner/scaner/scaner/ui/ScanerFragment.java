@@ -1,15 +1,17 @@
 package com.scaner.scaner.scaner.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -42,7 +44,6 @@ import com.zjrb.core.common.permission.Permission;
 import com.zjrb.core.common.permission.PermissionManager;
 import com.zjrb.core.domain.MediaEntity;
 import com.zjrb.core.nav.Nav;
-import com.zjrb.core.ui.widget.dialog.AuthorityDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ import butterknife.ButterKnife;
  * create time:2018/5/3  上午9:24
  */
 
-public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback, IPermissionCallBack, AuthorityDialog.OnAuthorityListener {
+public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback, IPermissionCallBack {
 
     @BindView(R2.id.capture_preview)
     SurfaceView surfaceView;
@@ -258,34 +259,43 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            ContentResolver resolver = getActivity().getContentResolver();
-            // 照片的原始资源地址
-            startLoadingAnim();
-            if (data != null) {
-                ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
-                if (list != null && !list.isEmpty()) {
-                    originalUri = list.get(0).getUri();
+            if(requestCode == 10){
+                ContentResolver resolver = getActivity().getContentResolver();
+                // 照片的原始资源地址
+                startLoadingAnim();
+                if (data != null) {
+                    ArrayList<MediaEntity> list = data.getParcelableArrayListExtra("key_data");
+                    if (list != null && !list.isEmpty()) {
+                        originalUri = list.get(0).getUri();
+                    }
                 }
-            }
 
-            try {
-                // 使用ContentProvider通过URI获取原始图片
-                if (originalUri != null) {
-                    Bitmap photo = MediaStore.Images.Media.getBitmap(resolver, originalUri);
-                    // 开始对图像资源解码
-                    Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
-                    if (rawResult != null) {
-                        onSuccess(rawResult);
+                try {
+                    // 使用ContentProvider通过URI获取原始图片
+                    if (originalUri != null) {
+                        Bitmap photo = MediaStore.Images.Media.getBitmap(resolver, originalUri);
+                        // 开始对图像资源解码
+                        Result rawResult = QrBarToolUtils.decodeFromPhoto(photo);
+                        if (rawResult != null) {
+                            onSuccess(rawResult);
+                        } else {
+                            onFail();
+                        }
                     } else {
                         onFail();
                     }
-                } else {
-                    onFail();
-                }
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(requestCode == 100){
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    onGranted(true);
+                }
             }
+
         }
 
     }
@@ -350,9 +360,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         if (errDialog != null && errDialog.isShowing()) {
             errDialog.dismiss();
         }
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
     }
 
     /**
@@ -398,7 +405,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         init();
     }
 
-    private AuthorityDialog dialog;
 
     /**
      * 权限拒绝
@@ -407,8 +413,8 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onDenied(List<String> neverAskPerms) {
-        dialog = new AuthorityDialog(getContext()).setMessage(getString(R.string.module_scaner_permission_text)).setIcon(R.mipmap.ic_launcher).setOnAuthorityListener(this);
-        dialog.show();
+        Nav.with(this).toPath("/authority", 100);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
@@ -416,23 +422,4 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
 
     }
 
-    @Override
-    public void onCancel() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-    }
-
-    /**
-     * 权限dialog点击设置，进入APP应用信息页面
-     */
-    @Override
-    public void onSetting() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-        getActivity().finish();
-    }
 }

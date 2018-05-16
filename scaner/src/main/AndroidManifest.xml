@@ -31,7 +31,8 @@
         <!--二维码扫描页-->
         <activity
             android:name=".ui.ScanerResultActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -44,6 +45,8 @@
                     android:scheme="@string/data_scheme" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>
