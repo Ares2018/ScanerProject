@@ -96,7 +96,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     /**
      * 是否有预览
      */
-    private boolean hasSurface;
+    private boolean hasSurface = false;
 
     private OnCloseLightListen lightListen;
 
@@ -146,6 +146,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
                 .request(this, this, Permission.STORAGE_READE, Permission.STORAGE_WRITE, Permission.CAMERA);
     }
 
+
     private void init() {
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
@@ -158,6 +159,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
 
                 }
 
+                //TODO  点击允许时没有执行
                 @Override
                 public void surfaceCreated(SurfaceHolder holder) {
                     if (!hasSurface) {
@@ -195,6 +197,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     @Override
     public void onDestroy() {
         inactivityTimer.shutdown();
+        hasSurface = true;
         super.onDestroy();
         dismissDialog();
     }
@@ -259,7 +262,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if(requestCode == 10){
+            if (requestCode == 10) {
                 ContentResolver resolver = getActivity().getContentResolver();
                 // 照片的原始资源地址
                 startLoadingAnim();
@@ -288,7 +291,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else if(requestCode == 100){
+            } else if (requestCode == 100) {
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
