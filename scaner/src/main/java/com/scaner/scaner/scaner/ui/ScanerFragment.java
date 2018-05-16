@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -36,11 +37,16 @@ import com.scaner.scaner.scaner.utils.AnimationToolUtils;
 import com.scaner.scaner.scaner.utils.QrBarToolUtils;
 import com.zjrb.core.common.base.BaseFragment;
 import com.zjrb.core.common.global.IKey;
+import com.zjrb.core.common.permission.IPermissionCallBack;
+import com.zjrb.core.common.permission.Permission;
+import com.zjrb.core.common.permission.PermissionManager;
 import com.zjrb.core.domain.MediaEntity;
 import com.zjrb.core.nav.Nav;
+import com.zjrb.core.ui.widget.dialog.AuthorityDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import butterknife.BindView;
@@ -52,7 +58,7 @@ import butterknife.ButterKnife;
  * create time:2018/5/3  上午9:24
  */
 
-public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback {
+public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback, IPermissionCallBack, AuthorityDialog.OnAuthorityListener {
 
     @BindView(R2.id.capture_preview)
     SurfaceView surfaceView;
@@ -91,7 +97,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     private boolean hasSurface;
 
-    private OnCloseLightListen  lightListen;
+    private OnCloseLightListen lightListen;
 
     /**
      * 私有构造器
@@ -135,13 +141,11 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         CameraManager.init(getContext().getApplicationContext());
         hasSurface = false;
         inactivityTimer = new InactivityTimer(getActivity());
+        PermissionManager.get()
+                .request(this, this, Permission.STORAGE_READE, Permission.STORAGE_WRITE, Permission.CAMERA);
     }
 
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void init() {
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             //Camera初始化
@@ -169,6 +173,12 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
             });
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -277,6 +287,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
                 e.printStackTrace();
             }
         }
+
     }
 
 
@@ -302,7 +313,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     public void onSuccess(Result result) {
         stopLoadingAnim();
         lightListen.closeLight();
-        //链接
+        //链接eb
         if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
             Nav.with(this).toPath(result.getText());//链接
             onReScaner();
@@ -339,6 +350,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         if (errDialog != null && errDialog.isShowing()) {
             errDialog.dismiss();
         }
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     /**
@@ -372,5 +386,53 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     private void stopLoadingAnim() {
         mIcon.clearAnimation();
+    }
+
+    /**
+     * 权限允许
+     *
+     * @param isAlreadyDef
+     */
+    @Override
+    public void onGranted(boolean isAlreadyDef) {
+        init();
+    }
+
+    private AuthorityDialog dialog;
+
+    /**
+     * 权限拒绝
+     *
+     * @param neverAskPerms
+     */
+    @Override
+    public void onDenied(List<String> neverAskPerms) {
+        dialog = new AuthorityDialog(getContext()).setMessage(getString(R.string.module_scaner_permission_text)).setIcon(R.mipmap.ic_launcher).setOnAuthorityListener(this);
+        dialog.show();
+    }
+
+    @Override
+    public void onElse(List<String> deniedPerms, List<String> neverAskPerms) {
+
+    }
+
+    @Override
+    public void onCancel() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    /**
+     * 权限dialog点击设置，进入APP应用信息页面
+     */
+    @Override
+    public void onSetting() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

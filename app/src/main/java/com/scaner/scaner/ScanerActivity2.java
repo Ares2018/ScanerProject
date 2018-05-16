@@ -1,11 +1,7 @@
 package com.scaner.scaner;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -41,7 +37,7 @@ public class ScanerActivity2 extends BaseActivity implements OnCloseLightListen 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scaner);
         ButterKnife.bind(this);
-        initPermission();
+//        initPermission();
         init();
     }
 
@@ -53,16 +49,16 @@ public class ScanerActivity2 extends BaseActivity implements OnCloseLightListen 
     }
 
 
-    /**
-     * 需要打开相机权限
-     */
-    private void initPermission() {
-        //请求Camera权限 与 文件读写 权限
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
-    }
+//    /**
+//     * 需要打开相机权限
+//     */
+//    private void initPermission() {
+//        //请求Camera权限 与 文件读写 权限
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+//                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//        }
+//    }
 
     /**
      * 闪光灯管理

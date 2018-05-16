@@ -73,6 +73,7 @@ public class ImageScanerUtils {
      * @return 调用方式：ImageScanerUtils.handleQRCodeFormBitmap(getBitmap(sUrl));
      */
     public Result handleQRCodeFormBitmap(Bitmap bitmap) {
+        if(bitmap == null)  return null;
         //获取图片宽高
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();

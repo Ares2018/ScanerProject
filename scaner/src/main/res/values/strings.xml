@@ -3,4 +3,5 @@
     <string name="module_scaner_scaner_text">将二维码放入框内，即可自动扫描</string>
     <string name="module_scaner_result_text">已扫描到以下内容</string>
     <string name="module_scaner_result_tip">扫描所得内容非浙江新闻提供，请谨慎使用</string>
+    <string name="module_scaner_permission_text">您已拒绝了相机权限，请在手机系统中开启浙江新闻的相机权限</string>
 </resources>

@@ -30,7 +30,7 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
 
 
     @Override
-    public void onLongClickCallBack(String imgUrl) {
+    public void onLongClickCallBack(String imgUrl,boolean var2) {
         //使用线程池处理二维码扫描
         ThreadManager.ThreadPoolProxy pool = ThreadManager.getSinglePool();
         pool.execute(new ScanerRunner(imgUrl));
