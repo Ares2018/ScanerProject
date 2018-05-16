@@ -12,4 +12,5 @@
     <color name="tc_808080">#808080</color>
     <color name="tc_484848_night">#7a7b7d</color>
     <color name="bc_ffffff">#ffffff</color>
+    <color name="bc_66000000">#66000000</color>
 </resources>

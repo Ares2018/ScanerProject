@@ -132,10 +132,12 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         return inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
     }
 
+    private  SurfaceHolder surfaceHolder;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        surfaceHolder = surfaceView.getHolder();
         //扫描动画初始化
         AnimationToolUtils.ScaleUpDowm(mQrLineView);
         //初始化 CameraManager
@@ -147,8 +149,11 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     }
 
 
+    /**
+     * 初始化surfaceView
+     */
     private void init() {
-        SurfaceHolder surfaceHolder = surfaceView.getHolder();
+        surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             //Camera初始化
             initCamera(surfaceHolder);
@@ -171,10 +176,8 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
                 @Override
                 public void surfaceDestroyed(SurfaceHolder holder) {
                     hasSurface = false;
-
                 }
             });
-            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
     }
 
@@ -199,6 +202,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         inactivityTimer.shutdown();
         super.onDestroy();
         dismissDialog();
+        CameraManager.get().closeDriver();
     }
 
 
