@@ -159,7 +159,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
 
                 }
 
-                //TODO  点击允许时没有执行
+                //TODO  WLJ 点击允许时没有执行
                 @Override
                 public void surfaceCreated(SurfaceHolder holder) {
                     if (!hasSurface) {
@@ -197,7 +197,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     @Override
     public void onDestroy() {
         inactivityTimer.shutdown();
-        hasSurface = true;
         super.onDestroy();
         dismissDialog();
     }
