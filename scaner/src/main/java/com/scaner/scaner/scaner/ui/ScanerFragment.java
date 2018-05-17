@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -60,7 +59,10 @@ import butterknife.ButterKnife;
  * create time:2018/5/3  上午9:24
  */
 
-public class ScanerFragment extends BaseFragment implements OnScanerListener, ScanerErrorDialog.OnClickCallback, IPermissionCallBack {
+public class ScanerFragment extends BaseFragment implements OnScanerListener,
+        ScanerErrorDialog.OnClickCallback,
+        IPermissionCallBack,
+        SurfaceHolder.Callback {
 
     @BindView(R2.id.capture_preview)
     SurfaceView surfaceView;
@@ -98,6 +100,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      * 是否有预览
      */
     private boolean hasSurface = false;
+    private boolean isHasGranted = false;
 
     private OnCloseLightListen lightListen;
 
@@ -133,7 +136,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         return inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
     }
 
-    private SurfaceHolder surfaceHolder;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -144,37 +146,12 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         //初始化 CameraManager
         CameraManager.init(getContext().getApplicationContext());
         hasSurface = false;
+        surfaceView.getHolder().addCallback(this);
         inactivityTimer = new InactivityTimer(getActivity());
         PermissionManager.get()
                 .request(this, this, Permission.STORAGE_READE, Permission.STORAGE_WRITE, Permission.CAMERA);
-        surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                hasSurface = true;
-                Log.e("scanner", "into--[surfaceCreated]");
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                Log.e("scanner", "into--[surfaceChanged]");
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                Log.e("scanner", "into--[surfaceDestroyed]");
-                hasSurface = false;
-            }
-        });
     }
 
-
-    /**
-     * 初始化surfaceView
-     */
-    private void init() {
-
-    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -193,6 +170,16 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (handler != null) {
+            handler.quitSynchronously();
+            handler = null;
+        }
+        CameraManager.get().closeDriver();
+    }
+
+    @Override
     public void onDestroy() {
         inactivityTimer.shutdown();
         super.onDestroy();
@@ -200,6 +187,26 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         CameraManager.get().closeDriver();
     }
 
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        if (isHasGranted) {
+            initCamera(holder);
+        }
+        hasSurface = true;
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        if (isHasGranted) {
+            initCamera(holder);
+        }
+        hasSurface = true;
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        hasSurface = false;
+    }
 
     private void setCropWidth(int cropWidth) {
         mCropWidth = cropWidth;
@@ -403,27 +410,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onGranted(boolean isAlreadyDef) {
+        isHasGranted = true;
         if (hasSurface) {
             initCamera(surfaceView.getHolder());
-        } else {
-            surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-                @Override
-                public void surfaceCreated(SurfaceHolder holder) {
-                    initCamera(holder);
-                    hasSurface = true;
-                }
-
-                @Override
-                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                    initCamera(holder);
-                    hasSurface = true;
-                }
-
-                @Override
-                public void surfaceDestroyed(SurfaceHolder holder) {
-
-                }
-            });
         }
     }
 
@@ -435,6 +424,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onDenied(List<String> neverAskPerms) {
+        isHasGranted = false;
         Nav.with(this).toPath("/authority", 100);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
