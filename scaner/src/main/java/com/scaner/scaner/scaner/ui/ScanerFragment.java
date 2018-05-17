@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -132,12 +133,12 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         return inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
     }
 
-    private  SurfaceHolder surfaceHolder;
+    private SurfaceHolder surfaceHolder;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        surfaceHolder = surfaceView.getHolder();
         //扫描动画初始化
         AnimationToolUtils.ScaleUpDowm(mQrLineView);
         //初始化 CameraManager
@@ -146,6 +147,25 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
         inactivityTimer = new InactivityTimer(getActivity());
         PermissionManager.get()
                 .request(this, this, Permission.STORAGE_READE, Permission.STORAGE_WRITE, Permission.CAMERA);
+        surfaceHolder = surfaceView.getHolder();
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                hasSurface = true;
+                Log.e("scanner", "into--[surfaceCreated]");
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                Log.e("scanner", "into--[surfaceChanged]");
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                Log.e("scanner", "into--[surfaceDestroyed]");
+                hasSurface = false;
+            }
+        });
     }
 
 
@@ -153,32 +173,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      * 初始化surfaceView
      */
     private void init() {
-        surfaceHolder = surfaceView.getHolder();
-        if (hasSurface) {
-            //Camera初始化
-            initCamera(surfaceHolder);
-        } else {
-            surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-                @Override
-                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
-                }
-
-                //TODO  WLJ 点击允许时没有执行
-                @Override
-                public void surfaceCreated(SurfaceHolder holder) {
-                    if (!hasSurface) {
-                        hasSurface = true;
-                        initCamera(holder);
-                    }
-                }
-
-                @Override
-                public void surfaceDestroyed(SurfaceHolder holder) {
-                    hasSurface = false;
-                }
-            });
-        }
     }
 
     @SuppressWarnings("deprecation")
@@ -408,7 +403,28 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener, Sc
      */
     @Override
     public void onGranted(boolean isAlreadyDef) {
-        init();
+        if (hasSurface) {
+            initCamera(surfaceView.getHolder());
+        } else {
+            surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+                @Override
+                public void surfaceCreated(SurfaceHolder holder) {
+                    initCamera(holder);
+                    hasSurface = true;
+                }
+
+                @Override
+                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                    initCamera(holder);
+                    hasSurface = true;
+                }
+
+                @Override
+                public void surfaceDestroyed(SurfaceHolder holder) {
+
+                }
+            });
+        }
     }
 
 
