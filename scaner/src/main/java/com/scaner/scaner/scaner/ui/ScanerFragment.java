@@ -431,7 +431,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
 
     @Override
     public void onElse(List<String> deniedPerms, List<String> neverAskPerms) {
-
+        isHasGranted = false;
+        Nav.with(this).toPath("/authority", 100);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
 }
