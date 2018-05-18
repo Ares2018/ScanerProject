@@ -3,7 +3,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/capture_containter"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+    android:background="?attr/tc_ffffff">
 
     <TextView
         android:id="@+id/tv_title"
@@ -33,7 +34,7 @@
         android:paddingTop="6dp"
         android:scrollbars="vertical"
         android:textColor="?attr/module_scaner_tc_484848"
-        tools:text="当地时间10月2日上午，代表团抵达捷克首都布拉格，开始了对捷克的友好访问。代表团抵达时，捷克方面在机场举行了欢迎仪式，捷克总统特命代表、捷克总理对华事务全权顾问、捷中友好合作协会主席到机场迎接。"
+        android:text="当地时间10月2日上午，代表团抵达捷克首都布拉格，开始了对捷克的友好访问。代表团抵达时，捷克方面在机场举行了欢迎仪式，捷克总统特命代表、捷克总理对华事务全权顾问、捷中友好合作协会主席到机场迎接。"
         />
 
     <TextView

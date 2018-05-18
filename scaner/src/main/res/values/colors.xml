@@ -5,12 +5,12 @@
     <color name="colorPrimaryDark">#d12324</color>
     <color name="colorPrimaryDark_night">#520d0d</color>
     <color name="module_scaner_text_bg">#838383</color>
-    <color name="tc_484848">#484848</color>
+    <color name="module_scaner_tc_484848">#484848</color>
     <color name="dc_979797">#979797</color>
     <color name="tc_f44b50">#f44b50</color>
     <color name="tc_ffffff">#ffffff</color>
-    <color name="tc_808080">#808080</color>
-    <color name="tc_484848_night">#7a7b7d</color>
+    <color name="module_scaner_tc_808080">#808080</color>
+    <color name="module_scaner_tc_484848_night">#7a7b7d</color>
     <color name="bc_ffffff">#ffffff</color>
     <color name="bc_66000000">#66000000</color>
 </resources>

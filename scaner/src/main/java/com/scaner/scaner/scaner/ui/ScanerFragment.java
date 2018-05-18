@@ -401,6 +401,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
      */
     private void stopLoadingAnim() {
         mIcon.clearAnimation();
+        if (mContainerOver.getVisibility() == View.VISIBLE) {
+            mContainerOver.setVisibility(View.GONE);
+        }
     }
 
     /**
