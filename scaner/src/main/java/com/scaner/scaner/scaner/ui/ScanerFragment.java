@@ -333,7 +333,11 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
         lightListen.closeLight();
         //链接eb
         if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
-            Nav.with(this).toPath(result.getText());//链接
+            if (result.getText().contains("weixin.qq.com")) {
+                Nav.with(getContext()).toPath("http://weixin.qq.com/");//链接
+            } else {
+                Nav.with(getContext()).toPath(result.getText());//链接
+            }
             onReScaner();
         } else {
             //文本
