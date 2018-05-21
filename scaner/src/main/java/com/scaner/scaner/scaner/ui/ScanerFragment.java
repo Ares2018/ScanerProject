@@ -3,6 +3,7 @@ package com.scaner.scaner.scaner.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -119,6 +120,14 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
     public static ScanerFragment newInstance() {
         ScanerFragment fragment = new ScanerFragment();
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCloseLightListen) {
+            lightListen = (OnCloseLightListen) context;
+        }
     }
 
     public void setLightListen(OnCloseLightListen lightListen) {

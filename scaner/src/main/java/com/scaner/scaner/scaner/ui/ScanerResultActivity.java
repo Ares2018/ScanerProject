@@ -1,7 +1,6 @@
 package com.scaner.scaner.scaner.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -34,7 +33,7 @@ public class ScanerResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scaner_result);
         ButterKnife.bind(this);
-        getIntentData(getIntent());
+        initArgs(savedInstanceState);
         setResultText();
     }
 
@@ -44,21 +43,37 @@ public class ScanerResultActivity extends BaseActivity {
         return TopBarFactory.createScanerResultTopBar(view, this, "扫描结果").getView();
     }
 
+
     /**
-     * @param intent 获取传递数据
+     * 获取传递数据
+     *
+     * @param savedInstanceState
      */
-    private void getIntentData(Intent intent) {
-        if (intent != null) {
-            Uri data = intent.getData();
-            if (data != null) {
-                if (data.getQueryParameter(IKey.SCANER_TEXT) != null) {
-                    scanerText = data.getQueryParameter(IKey.SCANER_TEXT);
-                }
-            }
-
-
+    private void initArgs(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            scanerText = savedInstanceState.getString(IKey.SCANER_TEXT);
+        } else {
+            Intent intent = this.getIntent();
+            scanerText = intent.getStringExtra(IKey.SCANER_TEXT);
         }
+
     }
+
+//    /**
+//     * @param intent 获取传递数据
+//     */
+//    private void getIntentData(Intent intent) {
+//        if (intent != null) {
+//            Uri data = intent.getData();
+//            if (data != null) {
+//                if (data.getQueryParameter(IKey.SCANER_TEXT) != null) {
+//                    scanerText = data.getQueryParameter(IKey.SCANER_TEXT);
+//                }
+//            }
+//
+//
+//        }
+//    }
 
     /**
      * 显示扫描结果
