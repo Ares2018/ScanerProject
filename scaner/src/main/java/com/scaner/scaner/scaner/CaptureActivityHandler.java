@@ -3,7 +3,6 @@ package com.scaner.scaner.scaner;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.scaner.scaner.scaner.decoding.InactivityTimer;
@@ -57,7 +56,6 @@ public final class CaptureActivityHandler extends Handler {
             inactivityTimer.onActivity();
             //扫描成功之后的振动与声音提示
             BeepToolUtils.playBeep(activity, true);
-            Toast.makeText(activity.getApplicationContext(), ((Result) message.obj).getText(), Toast.LENGTH_SHORT).show();
             if (message.obj != null) {
                 listener.onSuccess((Result) message.obj);
             }

@@ -59,22 +59,6 @@ public class ScanerResultActivity extends BaseActivity {
 
     }
 
-//    /**
-//     * @param intent 获取传递数据
-//     */
-//    private void getIntentData(Intent intent) {
-//        if (intent != null) {
-//            Uri data = intent.getData();
-//            if (data != null) {
-//                if (data.getQueryParameter(IKey.SCANER_TEXT) != null) {
-//                    scanerText = data.getQueryParameter(IKey.SCANER_TEXT);
-//                }
-//            }
-//
-//
-//        }
-//    }
-
     /**
      * 显示扫描结果
      */
