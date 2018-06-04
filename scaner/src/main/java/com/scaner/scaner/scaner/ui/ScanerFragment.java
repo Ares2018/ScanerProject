@@ -142,7 +142,9 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
+        View v = inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
+//        initSurFcaeView(container);
+        return v;
     }
 
 
@@ -161,6 +163,15 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
                 .request(this, this, Permission.STORAGE_READE, Permission.STORAGE_WRITE, Permission.CAMERA);
     }
 
+    //TEST
+//    private ViewGroup container;
+//
+//    private void initSurFcaeView(ViewGroup container) {
+//        this.container = container;
+//        surfaceView = new SurfaceView(getContext());
+//        surfaceView.getHolder().addCallback(this);
+//        this.container.addView(surfaceView, 0);
+//    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -175,6 +186,8 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
             handler.quitSynchronously();
             handler = null;
         }
+        surfaceView.refreshDrawableState();
+//        container.removeViewAt(0);
         CameraManager.get().closeDriver();
     }
 
@@ -185,7 +198,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
             handler.quitSynchronously();
             handler = null;
         }
-        CameraManager.get().closeDriver();
     }
 
     @Override
@@ -340,7 +352,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
     public void onSuccess(Result result) {
         stopLoadingAnim();
         lightListen.closeLight();
-        //链接eb
+        //链接
         if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
             if (result.getText().contains("weixin.qq.com")) {
                 Nav.with(getContext()).toPath("http://weixin.qq.com/");//链接
@@ -351,10 +363,10 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
         } else {
             //文本
             if (!TextUtils.isEmpty(result.getText())) {
+                onReScaner();
                 Bundle bundle = new Bundle();
                 bundle.putString(IKey.SCANER_TEXT, result.getText());
                 Nav.with(this).setExtras(bundle).toPath("/ui/ScanerResultActivity");
-                onReScaner();
             } else {
                 onFail();
             }

@@ -122,7 +122,6 @@ public final class CameraManager {
                 throw new IOException();
             }
             camera.setPreviewDisplay(holder);
-
             if (!initialized) {
                 initialized = true;
                 configManager.initFromCameraParameters(camera);
