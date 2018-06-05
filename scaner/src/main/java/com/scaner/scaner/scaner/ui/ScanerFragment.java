@@ -143,7 +143,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.module_scaner_fragment_scaner_code, container, false);
-//        initSurFcaeView(container);
         return v;
     }
 
@@ -163,20 +162,17 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
                 .request(this, this, Permission.STORAGE_READE, Permission.STORAGE_WRITE, Permission.CAMERA);
     }
 
-    //TEST
-//    private ViewGroup container;
-//
-//    private void initSurFcaeView(ViewGroup container) {
-//        this.container = container;
-//        surfaceView = new SurfaceView(getContext());
-//        surfaceView.getHolder().addCallback(this);
-//        this.container.addView(surfaceView, 0);
-//    }
 
     @SuppressWarnings("deprecation")
     @Override
     public void onResume() {
         super.onResume();
+        //todo  wlj  surfaceview渲染时机异常，临时处理
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -186,8 +182,6 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
             handler.quitSynchronously();
             handler = null;
         }
-        surfaceView.refreshDrawableState();
-//        container.removeViewAt(0);
         CameraManager.get().closeDriver();
     }
 
@@ -352,6 +346,7 @@ public class ScanerFragment extends BaseFragment implements OnScanerListener,
     public void onSuccess(Result result) {
         stopLoadingAnim();
         lightListen.closeLight();
+
         //链接
         if (result.getText().startsWith("http") || result.getText().startsWith("https")) {
             if (result.getText().contains("weixin.qq.com")) {
