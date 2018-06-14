@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.zxing.Result;
-import com.scaner.scaner.scaner.utils.ImageScanerUtils;
 import com.zjrb.core.common.base.BaseActivity;
 import com.zjrb.core.common.manager.ThreadManager;
 import com.zjrb.core.nav.Nav;
 import com.zjrb.core.ui.widget.ZBWebView;
+import com.zjrb.core.utils.ImageScanerUtils;
 import com.zjrb.core.utils.webjs.LongClickCallBack;
 
 /**
@@ -37,7 +37,7 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
     }
 
     //异步处理扫描事宜
-    public class ScanerRunner implements Runnable {
+    private class ScanerRunner implements Runnable {
         private String imgUrl;
 
         public ScanerRunner(String imgUrl) {
