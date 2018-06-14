@@ -3,6 +3,7 @@ package com.scaner.scaner.scaner.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class ScanerResultActivity extends BaseActivity {
         setContentView(R.layout.activity_scaner_result);
         ButterKnife.bind(this);
         initArgs(savedInstanceState);
+        tvTextResult.setMovementMethod(ScrollingMovementMethod.getInstance());
         setResultText();
     }
 
