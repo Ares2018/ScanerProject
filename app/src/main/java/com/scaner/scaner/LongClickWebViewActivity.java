@@ -48,10 +48,10 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
         public void run() {
             ImageScanerUtils imgUtils = ImageScanerUtils.get();
             if (imgUtils != null) {
-                result = imgUtils.handleQRCodeFormBitmap(imgUtils.getBitmap(imgUrl));
-                Log.v("", "");
-                //有文字和链接2种情况，文字有一个页面  需要判断是不是网络连接
-                Nav.with(LongClickWebViewActivity.this).toPath(result.getText());
+//                result = imgUtils.handleQRCodeFormBitmap(imgUtils.getBitmap(imgUrl));
+//                Log.v("", "");
+//                //有文字和链接2种情况，文字有一个页面  需要判断是不是网络连接
+//                Nav.with(LongClickWebViewActivity.this).toPath(result.getText());
             }
         }
     }

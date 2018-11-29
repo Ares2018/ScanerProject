@@ -12,7 +12,7 @@
         android:layout_height="76dp"
         android:gravity="center"
         android:text="二维码读取失败"
-        android:textColor="@color/tc_484848"
+        android:textColor="#484848"
         android:textSize="@dimen/ts_15sp" />
 
     <View

@@ -31,7 +31,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         UIUtils.init(this);
         GlideMode.setProvincialTraffic(SettingManager.getInstance().isProvincialTraffic());
-        ThemeMode.initTheme(R.style.AppTheme, R.style.CoreThemeNight_Base);
+//        ThemeMode.initTheme(R.style.AppTheme, R.style.CoreThemeNight_Base);
         UiModeManager.init(this, R.styleable.SupportUiMode);
 
         setTheme(ThemeMode.isNightMode() ? R.style.CoreThemeNight_Base : R.style.AppTheme);

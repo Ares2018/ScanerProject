@@ -51,7 +51,6 @@
             android:layout_toLeftOf="@+id/iv_album"
             android:scaleType="center"
             android:src="@drawable/module_core_selector_light"
-            app:iv_maskColor="@android:color/transparent"
             />
         />
 
