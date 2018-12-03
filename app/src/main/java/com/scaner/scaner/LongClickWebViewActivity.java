@@ -3,10 +3,11 @@ package com.scaner.scaner;
 import android.os.Bundle;
 
 import com.google.zxing.Result;
+import com.scaner.scaner.scaner.utils.ImageScanerUtils;
 import com.zjrb.core.common.base.BaseActivity;
 import com.zjrb.core.common.manager.ThreadManager;
+import com.zjrb.core.nav.Nav;
 import com.zjrb.core.ui.widget.ZBWebView;
-import com.zjrb.core.utils.ImageScanerUtils;
 import com.zjrb.core.utils.webjs.LongClickCallBack;
 
 /**
@@ -47,10 +48,9 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
         public void run() {
             ImageScanerUtils imgUtils = ImageScanerUtils.get();
             if (imgUtils != null) {
-//                result = imgUtils.handleQRCodeFormBitmap(imgUtils.getBitmap(imgUrl));
-//                Log.v("", "");
-//                //有文字和链接2种情况，文字有一个页面  需要判断是不是网络连接
-//                Nav.with(LongClickWebViewActivity.this).toPath(result.getText());
+                result = imgUtils.handleQRCodeFormBitmap(imgUrl);
+                //有文字和链接2种情况，文字有一个页面  需要判断是不是网络连接
+                Nav.with(LongClickWebViewActivity.this).toPath(result.getText());
             }
         }
     }
