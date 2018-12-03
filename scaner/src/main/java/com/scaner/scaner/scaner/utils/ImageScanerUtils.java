@@ -23,8 +23,8 @@ import java.util.Hashtable;
  * create time:2018/4/19  下午3:19
  */
 
-public class ImageScanerUtils {
-
+final public class ImageScanerUtils {
+    private int beepID = -1;
     private volatile static ImageScanerUtils instance;
 
     private ImageScanerUtils() {
@@ -39,6 +39,15 @@ public class ImageScanerUtils {
             }
         }
         return instance;
+    }
+
+    public ImageScanerUtils setBeepId(int id) {
+        beepID = id;
+        return this;
+    }
+
+    public int getBeepID() {
+        return beepID;
     }
 
     /**

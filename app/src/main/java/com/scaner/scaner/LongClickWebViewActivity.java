@@ -22,7 +22,6 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_long_click_web_view);
         webView = (ZBWebView) findViewById(R.id.web_view);
-        //这里借用翔哥的博客
         webView.loadUrl("http://blog.csdn.net/lmj623565791/article/details/50709663");//加载页面
         webView.setLongClickCallBack(this);
     }
@@ -43,13 +42,11 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
             this.imgUrl = imgUrl;
         }
 
-        //TODO  需要兼容url，文件流，bitmap
         @Override
         public void run() {
-            ImageScanerUtils imgUtils = ImageScanerUtils.get();
+            ImageScanerUtils imgUtils = ImageScanerUtils.get().setBeepId(R.raw.beep);
             if (imgUtils != null) {
                 result = imgUtils.handleQRCodeFormBitmap(imgUrl);
-                //有文字和链接2种情况，文字有一个页面  需要判断是不是网络连接
                 Nav.with(LongClickWebViewActivity.this).toPath(result.getText());
             }
         }

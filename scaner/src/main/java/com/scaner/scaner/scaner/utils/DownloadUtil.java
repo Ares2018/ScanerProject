@@ -26,7 +26,7 @@ import okhttp3.Response;
  * @date 2018/4/17
  * 文件下载工具
  */
-public class DownloadUtil {
+final public class DownloadUtil {
     private static DownloadUtil mInstance;
     private final OkHttpClient okHttpClient;
     private final Handler mainThreadHandler;

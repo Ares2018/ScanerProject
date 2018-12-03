@@ -18,7 +18,7 @@ import java.util.Vector;
  * @date 2018/4/17
  * 图片解析
  */
-public class QrBarToolUtils {
+final public class QrBarToolUtils {
 
     /**
      * 解析图片中的 二维码 或者 条形码

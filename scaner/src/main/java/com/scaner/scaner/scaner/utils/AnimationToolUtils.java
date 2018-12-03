@@ -26,7 +26,7 @@ import com.scaner.scaner.scaner.interfaces.OnDoIntListener;
  * 扫描动画
  */
 
-public class AnimationToolUtils {
+final public class AnimationToolUtils {
 
     /**
      * 颜色渐变动画

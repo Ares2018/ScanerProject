@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * 正则工具
  */
 
-public class RegConstUtils {
+final public class RegConstUtils {
     /**
      * 正则：URL
      */

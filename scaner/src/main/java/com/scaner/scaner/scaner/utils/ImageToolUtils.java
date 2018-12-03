@@ -43,7 +43,7 @@ import java.net.URL;
  * 图像类工具
  */
 
-public class ImageToolUtils {
+final public class ImageToolUtils {
 
     public static ObjectAnimator invisToVis;
     public static ObjectAnimator visToInvis;

@@ -5,8 +5,6 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
-import com.scaner.scaner.scaner.R;
-
 import java.io.IOException;
 
 import static android.content.Context.AUDIO_SERVICE;
@@ -17,7 +15,7 @@ import static android.content.Context.AUDIO_SERVICE;
  * 提示音工具类
  */
 
-public class BeepToolUtils {
+final public class BeepToolUtils {
 
     private static final float BEEP_VOLUME = 0.50f;
     private static final int VIBRATE_DURATION = 200;
@@ -42,12 +40,17 @@ public class BeepToolUtils {
                 }
             });
 
-            AssetFileDescriptor file = mContext.getResources().openRawResourceFd(R.raw.beep);
+            AssetFileDescriptor file = null;
+            if (ImageScanerUtils.get() != null && ImageScanerUtils.get().getBeepID() != -1) {
+                file = mContext.getResources().openRawResourceFd(ImageScanerUtils.get().getBeepID());
+            }
             try {
-                mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
-                file.close();
-                mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
-                mediaPlayer.prepare();
+                if (file != null) {
+                    mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
+                    file.close();
+                    mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
+                    mediaPlayer.prepare();
+                }
             } catch (IOException e) {
                 mediaPlayer = null;
             }
