@@ -1,12 +1,10 @@
 package com.scaner.scaner;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.zxing.Result;
 import com.zjrb.core.common.base.BaseActivity;
 import com.zjrb.core.common.manager.ThreadManager;
-import com.zjrb.core.nav.Nav;
 import com.zjrb.core.ui.widget.ZBWebView;
 import com.zjrb.core.utils.ImageScanerUtils;
 import com.zjrb.core.utils.webjs.LongClickCallBack;
@@ -30,7 +28,7 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
 
 
     @Override
-    public void onLongClickCallBack(String imgUrl,boolean var2) {
+    public void onLongClickCallBack(String imgUrl, boolean var2) {
         //使用线程池处理二维码扫描
         ThreadManager.ThreadPoolProxy pool = ThreadManager.getSinglePool();
         pool.execute(new ScanerRunner(imgUrl));
@@ -44,6 +42,7 @@ public class LongClickWebViewActivity extends BaseActivity implements LongClickC
             this.imgUrl = imgUrl;
         }
 
+        //TODO  需要兼容url，文件流，bitmap
         @Override
         public void run() {
             ImageScanerUtils imgUtils = ImageScanerUtils.get();
