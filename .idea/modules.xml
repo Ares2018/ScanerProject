@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ScanerProject.iml" filepath="$PROJECT_DIR$/ScanerProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../CoreProject/core/core-library.iml" filepath="$PROJECT_DIR$/../CoreProject/core/core-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/scaner/scaner.iml" filepath="$PROJECT_DIR$/scaner/scaner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../CommonWebview/webview/webview.iml" filepath="$PROJECT_DIR$/../CommonWebview/webview/webview.iml" />
     </modules>
   </component>
 </project>

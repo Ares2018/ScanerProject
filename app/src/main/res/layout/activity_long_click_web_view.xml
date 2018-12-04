@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.scaner.scaner.LongClickWebViewActivity">
 
-    <com.zjrb.core.ui.widget.ZBWebView xmlns:android="http://schemas.android.com/apk/res/android"
-                                       android:id="@+id/web_view"
-                                       android:layout_width="match_parent"
-                                       android:layout_height="wrap_content"
-                                       android:scrollbars="none" />
+    <com.commonwebview.webview.CommonWebView xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:id="@+id/web_view"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:scrollbars="none" />
 
 </android.support.constraint.ConstraintLayout>

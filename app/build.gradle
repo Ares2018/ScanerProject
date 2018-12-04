@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 28
@@ -28,10 +27,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'cn.daily.android:common-webview:1.0.0.11'
     implementation project(':scaner')
-    implementation 'com.jakewharton:butterknife:9.0.0-rc1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
-    implementation('cn.daily.android:core-library:5.6.0.8') {
-        exclude group: 'cn.daily.android:analytics', module: 'analytics'
-    }
 }

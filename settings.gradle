@@ -1,3 +1,3 @@
 include ':app', ':scaner'
-include(':core-library')
-project(":core-library").projectDir = new File('../CoreProject/core')
+include(':webview')
+project(":webview").projectDir = new File('../CommonWebview/webview')

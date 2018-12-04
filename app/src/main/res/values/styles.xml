@@ -1,12 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="CoreTheme.Base">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:theme">@style/ScanerDayTheme</item>
 
     </style>
 
-    <style name="NightAppTheme" parent="CoreThemeNight.Base">
+    <style name="NightAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:theme">@style/ScanerNightTheme</item>
     </style>
 

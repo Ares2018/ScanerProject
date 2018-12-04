@@ -1,7 +1,6 @@
 package com.scaner.scaner.scaner.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.google.zxing.BinaryBitmap;
@@ -13,7 +12,7 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
-import com.zjrb.core.utils.PathUtil;
+import com.scaner.scaner.scaner.interfaces.OnDownLoadListener;
 
 import java.util.Hashtable;
 
@@ -32,7 +31,7 @@ final public class ImageScanerUtils {
 
     public static ImageScanerUtils get() {
         if (instance == null) {
-            synchronized (com.zjrb.core.utils.ImageScanerUtils.class) {
+            synchronized (ImageScanerUtils.class) {
                 if (instance == null) {
                     instance = new ImageScanerUtils();
                 }
@@ -51,7 +50,7 @@ final public class ImageScanerUtils {
     }
 
     /**
-     * 校验二维码
+     * 耗时，校验二维码
      *
      * @param bitmap
      * @return
@@ -94,10 +93,18 @@ final public class ImageScanerUtils {
      * @param imgUrl 图片地址
      * @return
      */
-    private Result result;
+    public void handleQRCodeFormBitmap(String imgUrl, final OnDownLoadListener listener) {
+        if (TextUtils.isEmpty(imgUrl) || !DownloadUtil.get().isHttpUrl(imgUrl)) return;
+        downImg(imgUrl, listener);
+    }
 
-    public Result handleQRCodeFormBitmap(String imgUrl) {
-        if (TextUtils.isEmpty(imgUrl) || !DownloadUtil.get().isHttpUrl(imgUrl)) return null;
+    /**
+     * 下载图片
+     *
+     * @param imgSrc
+     * @param listener
+     */
+    private void downImg(String imgSrc, final OnDownLoadListener listener) {
         try {
             DownloadUtil.get()
                     .setDir(PathUtil.getImagePath())
@@ -107,25 +114,27 @@ final public class ImageScanerUtils {
 
                         }
 
+                        //下载成功
                         @Override
                         public void onSuccess(String path) {
                             if (!path.isEmpty()) {
-                                result = null;
-                                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                                result = handleQRCodeFormBitmap(bitmap);
+                                listener.onDownLoadImgSuccess(path);
+//                                result = null;
+//                                Bitmap bitmap = BitmapFactory.decodeFile(path);
+//                                result = handleQRCodeFormBitmap(bitmap);
                             }
                         }
 
                         //图片下载失败
                         @Override
                         public void onFail(String err) {
+                            listener.onDownLoadImgFail(err);
                         }
                     })
-                    .download(imgUrl);
+                    .download(imgSrc);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
     }
 
 

@@ -11,11 +11,7 @@ package com.scaner.scaner;
 
 import android.app.Application;
 
-import com.aliya.uimode.UiModeManager;
-import com.core.glide.GlideMode;
-import com.zjrb.core.db.ThemeMode;
 import com.zjrb.core.utils.AppUtils;
-import com.zjrb.core.utils.SettingManager;
 import com.zjrb.core.utils.UIUtils;
 
 /**
@@ -30,12 +26,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         UIUtils.init(this);
-        GlideMode.setProvincialTraffic(SettingManager.getInstance().isProvincialTraffic());
-//        ThemeMode.initTheme(R.style.AppTheme, R.style.CoreThemeNight_Base);
-        UiModeManager.init(this, R.styleable.SupportUiMode);
-
-        setTheme(ThemeMode.isNightMode() ? R.style.CoreThemeNight_Base : R.style.AppTheme);
-
-        AppUtils.setChannel("sb");
+        AppUtils.setChannel("hah");
     }
 }

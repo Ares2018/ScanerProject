@@ -3,11 +3,6 @@ package com.scaner.scaner.scaner.utils;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.zjrb.core.R;
-import com.zjrb.core.api.okhttp.OkHttpUtils;
-import com.zjrb.core.utils.PathUtil;
-import com.zjrb.core.utils.UIUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,7 +42,7 @@ final public class DownloadUtil {
     }
 
     private DownloadUtil() {
-        okHttpClient = OkHttpUtils.getClient();
+        okHttpClient = new OkHttpClient();
         mainThreadHandler = new Handler();
     }
 
@@ -89,13 +84,13 @@ final public class DownloadUtil {
 
     public void download(String url) {
         if (TextUtils.isEmpty(url)) {
-            onFail(UIUtils.getString(R.string.error_invalid_apk_url));
+            onFail("无效的URL");
             return;
         }
         if (TextUtils.isEmpty(fileName))
             fileName = getNameFromUrl(url);
         if (TextUtils.isEmpty(fileName)) {
-            onFail(UIUtils.getString(R.string.error_invalid_apk_url));
+            onFail("无效的URL");
             return;
         }
         if (TextUtils.isEmpty(dir))

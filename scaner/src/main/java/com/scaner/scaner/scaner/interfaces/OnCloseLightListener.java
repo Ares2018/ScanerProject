@@ -7,7 +7,7 @@ package com.scaner.scaner.scaner.interfaces;
  * @date 2018/4/17
  */
 
-public interface OnCloseLightListen {
+public interface OnCloseLightListener {
 
     void closeLight();
 
