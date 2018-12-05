@@ -27,5 +27,4 @@ public class LongClickWebViewActivity extends AppCompatActivity {
         webView.loadUrl("http://blog.csdn.net/lmj623565791/article/details/50709663");//加载页面
     }
 
-
 }
